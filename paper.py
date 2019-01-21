@@ -121,7 +121,6 @@ class Tweet(db.Model):
 
 @app.route("/")
 def hello():
-    authors = Author.query.all()
     stories = Story.query.all()
     tags = Tag.query.all()
     words = [tag.word for tag in tags]
@@ -139,15 +138,17 @@ def hello():
 
     tagcounter =  [(k, tagcounter[k]) for k in sorted(tagcounter, key=tagcounter.get, reverse=True)]
 
-    austories = {}
-
-    for author in authors:
-        aid = author.id
-        storiesa = Story.query.filter(Story.authors.any(id=aid)).all()
-        austories[author.name] = storiesa
 
 
-    return render_template('home.html', authors=authors, austories=austories, stories=stories, tagcounter=tagcounter)
+
+    return render_template('home.html', stories=stories, tagcounter=tagcounter)
+
+@app.route("/stories/")
+def stories():
+    stories = Story.query.all()
+
+    return render_template('stories.html', stories=stories)
+
 
 @app.route("/story/<id>")
 def story(id):
@@ -169,6 +170,19 @@ def search():
                 results.append(story.id)
 
     return render_template('search.html', stories=stories, words=words, results=results, searchterm=searchterm)
+
+@app.route("/authors/")
+def authors():
+    authors = Author.query.all()
+
+    austories = {}
+
+    for author in authors:
+        aid = author.id
+        storiesa = Story.query.filter(Story.authors.any(id=aid)).all()
+        austories[author.name] = storiesa
+
+    return render_template('authors.html', authors=authors, austories=austories)
 
 @app.route("/author/<id>")
 def author(id):

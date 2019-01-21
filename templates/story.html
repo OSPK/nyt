@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block title %}{{story.title}} - Article analysis | Daily Pakistan Global{% endblock %}
+
+{% block content %}
+    <a href="{{story.url}}" target="_blank"><h1 class="text-center">{{story.title}}</h1></a>
+    <h3 class="text-center">
+    by {% for author in story.authors %}
+        {{author.name}} {%if story.authors|length > 1 and loop.index < story.authors|length%}and{%endif%}
+    {% endfor %}
+    <span> on {{story.pub_date|datetime('full')}}</span>
+    </h3>
+    <h3 class="text-center">
+        <i class="fab fa-facebook-square facebook-blue"></i> {{story.fb_shares}} |
+        <i class="fab fa-twitter twitter-blue"></i> {{story.tweets|length}} |
+        <i class="fas fa-retweet twitter-blue"></i> {{ story.tweets | sum(attribute='retweets') }} |
+        <i class="fas fa-heart twitter-red"></i> {{ story.tweets | sum(attribute='likes') }} |
+        <i class="fas fa-reply twitter-blue"></i> {{ story.tweets | sum(attribute='replies') }}
+    </h3>
+    <h4 class="text-center">Sentiment: {{"%0.4f" % story.sentiment | float}} | Subjectivity: {{"%0.4f" % story.subjectivity | float}}</h4>
+    <h4 class="text-center">
+        {% if story.sentiment > 0 %}
+        <span class="text-success">Mostly Positive</span>
+        {% else %}
+        <span class="text-danger">Mostly Negative</span>
+        {% endif %} &
+
+        {% if story.subjectivity < 0.25 %}
+        <span class="text-success">Mostly Objective</span>
+        {% else %}
+        <span class="text-danger">Mostly Subjective</span>
+        {% endif %}
+    </h4>
+    <hr>
+    
+
+    
+
+    <table class="table rwd-table table-inverse">
+        <thead>
+            <tr>
+                <th>Tweet</th>
+                <th>Retweets</th>
+                <th>Likes</th>
+                <th>Replies</th>
+                <th>Sentiment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tweet in story.tweets %}
+            <tr>
+                <td data-th="Tweet"><small class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr"><a href="{{tweet.link}}">{{tweet.text}}</a></p>&mdash; (<a href="https://twitter.com/{{tweet.username}}">{{tweet.username}}</a>) </small></td>
+                <td data-th="Retweets">{{tweet.retweets}}</td>
+                <td data-th="Likes">{{tweet.likes}}</td>
+                <td data-th="Replies">{{tweet.replies}}</td>
+                <td data-th="Sentiment">{{tweet.sentiment}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready( function () {
+        $('.table').DataTable({
+            "order": [[ 1, "desc" ]],
+            "pageLength": 5
+        });
+    } );
+</script>
+{% endblock %}

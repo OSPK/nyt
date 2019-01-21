@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+
+{% block title %}{{author.name}} - Author analysis | Daily Pakistan Global{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center">{{author.name}}</h1>
+{% set numstories = stories|length %}
+<h4 class="text-center">{{ numstories }} articles</h4><hr>
+{% set sentiment = stories|sum(attribute='sentiment') %}
+{% set sentiment = sentiment / numstories %}
+{% set subjectivity = stories|sum(attribute='subjectivity') %}
+{% set subjectivity = subjectivity / numstories %}
+<h4 class="text-center">Sentiment: {{ '%0.4f' % sentiment|float }} | Subjectivity: {{ '%0.4f' % subjectivity|float }}</h4>
+
+<h4 class="text-center">
+    {% if sentiment > 0 %}
+    <span class="text-success">Mostly Positive</span>
+    {% else %}
+    <span class="text-danger">Mostly Negative</span>
+    {% endif %} &
+
+    {% if subjectivity < 0.25 %}
+    <span class="text-success">Mostly Objective</span>
+    {% else %}
+    <span class="text-danger">Mostly Subjective</span>
+    {% endif %}
+</h4>
+
+<h3 class="text-center">
+<i class="fas fa-retweet twitter-blue"></i> <span class="total-tweets"></span> | <i class="fas fa-heart twitter-red"></i> <span class="total-likes"></span> | <i class="fas fa-reply twitter-blue"></i> <span class="total-replies"></span></h3><hr>
+<table class="table table-inverse rwd-table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Retweets</th>
+            <th>Likes</th>
+            <th>Replies</th>
+            <th>Sentiment</th>
+            <th>Subjectivity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for story in stories %}
+        <tr>
+            <td><a href="/story/{{story.id}}">{{story.title}}</a></td>
+            <td>{{ story.tweets | sum(attribute='retweets') }}</td>
+            <td>{{ story.tweets | sum(attribute='likes') }}</td>
+            <td>{{ story.tweets | sum(attribute='replies') }}</td>
+            <td>{{ '%0.4f' % story.sentiment | float }}</td>
+            <td>{{ '%0.4f' % story.subjectivity | float }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready( function () {
+        var table = $('.table').DataTable({
+            "order": [[ 1, "desc" ]],
+        });
+        $(".total-tweets").text(table.column(1).data().sum());
+        $(".total-likes").text(table.column(2).data().sum());
+        $(".total-replies").text(table.column(3).data().sum());
+    } );
+</script>
+{% endblock %}

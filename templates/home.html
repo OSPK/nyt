@@ -1,0 +1,320 @@
+{% extends 'index.html' %}
+
+{% block header %}
+<div class="container-fluid d-flex header">
+    <div class="cover">
+    <div class="row align-items-center h-100">
+        <div class="col-9 mx-auto">
+            <h3>118 Articles, 1 Year</h3>
+            <h1>An Analysis of New York Times' Coverage of Pakistan</h1><hr>
+            <a class="text-white" href="https://en.dailypakistan.com.pk/author/waqas/"><h5><em>&mdash; by Waqas Ahmed</em></h5></a>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="text-content">
+    <p>For better of for worse, New York Times is one of the leading newspapers of the world. It is what is called the "agenda-setting media" and has been leading the American public as well as policy discourse for a very long time. However, when it comes to Middle-East, South-Asia, or much of the global south, NYT's coverage seems either lacking in depth or too agenda driven. Apart from arguing with anecdotal evidence or conjecture we have not been able to say much about that. We do not yet have tools at our disposal that can accurately predict media bias - intentional or unintentional - or scientifically prove agenda-driven reporting even with multitude of language processing and machine learning tools available at our disposal today.</p>
+</div>
+<div class="ct-chart ct-perfect-fourth"></div>
+<div id="chart2" class="ct-chart chart2 ct-perfect-fourth" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
+<table class="rwd-table authortable">
+    <thead>
+        <tr>
+            <th>Author</th>
+            <th>Stories</th>
+            <th>Sentiment</th>
+            <th>Subjectivity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for author in authors %}
+        <tr>
+            <td data-th="Author"><a href="/author/{{author.id}}">{{author.name}}</a></td>
+            <td data-th="Stories">{{austories[author.name]|length}}</td>
+            {% set sentiment = austories[author.name]|sum(attribute='sentiment') / austories[author.name]|length %}
+            <td data-th="Sentiment">{{ '%0.4f' % sentiment|float }}</td>
+            {% set subjectivity = austories[author.name]|sum(attribute='subjectivity') / austories[author.name]|length%}
+            <td data-th="Subjectivity">{{ '%0.4f' % subjectivity|float }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>All Stories</h1>
+<table class="table table-inverse rwd-table storytable">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Sentiment</th>
+            <th>Subjectivity</th>
+            <th>Retweets</th>
+            <th>Likes</th>
+            <th>Replies</th>
+            <th>FB Shares</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for story in stories %}
+        <tr>
+            <td data-th="Story"><a href="/story/{{story.id}}">{{story.title}}</a></td>
+            <td data-th="Sentiment">{{ '%0.4f' % story.sentiment | float }}</td>
+            <td data-th="Subjectivity">{{ '%0.4f' % story.subjectivity | float }}</td>
+            <td data-th="Retweets">{{ story.tweets | sum(attribute='retweets') }}</td>
+            <td data-th="Likes">{{ story.tweets | sum(attribute='likes') }}</td>
+            <td data-th="Replies">{{ story.tweets | sum(attribute='replies') }}</td>
+            <td data-th="Facebook Shares">{{ story.fb_shares }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="tags"></div>
+
+
+
+<h1>Total Score</h1>
+<h2>Sentiment: -0.0876</h2>
+<h2>Subjectivity: 0.2866</h2>
+<h2>Retweets: 53559</h2>
+<h2>Likes: 99572</h2>
+<h2>Replies: 11068</h2>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        $(".header").css("height", h-100);
+    });
+
+    $(document).ready( function () {
+        $('.authortable').DataTable({
+            "order": [[ 1, "desc" ]],
+            "pageLength": 5
+        });
+    });
+
+    $(document).ready( function () {
+        $('.storytable').DataTable({
+            "order": [[ 3, "desc" ]],
+            "pageLength": 5
+        });
+    });
+
+    var data = {
+      labels: [{% for story in stories %}"{{story.id}}",{% endfor %}],
+      series: [
+      [{% for story in stories %}{
+      meta:"{{story.title}}", value:{{story.sentiment}}
+       }
+      ,{% endfor %}]
+      ]
+    };
+
+    var data2 = {
+      labels: [{% for story in stories %}"{{story.id}}",{% endfor %}],
+      series: [
+      [{% for story in stories %}{
+        meta:"{{story.title}}", value:{{story.subjectivity}}
+       }
+      ,{% endfor %}]
+      ]
+    };
+
+    var options = {
+      high: 1,
+      low: -1,
+      //horizontalBars: true,
+      plugins: [Chartist.plugins.tooltip()],
+      axisX: {
+        labelInterpolationFnc: function(value, index) {
+          return index % 2 === 0 ? "" : null;
+        }
+      }
+    };
+
+    var options2 = {
+      showLine: false,
+      plugins: [Chartist.plugins.tooltip()],
+      axisX: {
+        labelInterpolationFnc: function(value, index) {
+          return index % 200 === 0 ? "" : null;
+        }
+      }
+    };
+
+    new Chartist.Bar('.ct-chart', data, options);
+    //new Chartist.Line('.chart2', data2, options2);
+
+
+Highcharts.chart('chart2', {
+
+    chart: {
+        type: 'bubble',
+        plotBorderWidth: 1,
+        zoomType: 'xy'
+    },
+
+    legend: {
+        enabled: false
+    },
+
+    title: {
+        text: 'Subjectivity of NYT Articles'
+    },
+
+    // subtitle: {
+    //     text: 'Source: <a href="http://www.euromonitor.com/">Euromonitor</a> and <a href="https://data.oecd.org/">OECD</a>'
+    // },
+
+    xAxis: {
+        gridLineWidth: 1,
+        title: {
+            text: 'Sentiment Score'
+        },
+        labels: {
+            format: '{value}'
+        },
+        plotLines: [{
+            color: 'black',
+            dashStyle: 'dot',
+            width: 2,
+            value: 0,
+            label: {
+                rotation: 0,
+                y: 15,
+                style: {
+                    fontStyle: 'italic'
+                },
+                text: 'Neutrality'
+            },
+            zIndex: 3
+        }]
+    },
+
+    yAxis: {
+        startOnTick: false,
+        endOnTick: false,
+        title: {
+            text: 'Subjectivity Score'
+        },
+        labels: {
+            format: '{value}'
+        },
+        maxPadding: 0.2,
+        plotLines: [{
+            color: 'black',
+            dashStyle: 'dot',
+            width: 2,
+            value: 0.25,
+            label: {
+                align: 'right',
+                style: {
+                    fontStyle: 'italic'
+                },
+                text: 'Subjectivity Score 0.25',
+                x: -10
+            },
+            zIndex: 3
+        }]
+    },
+
+    tooltip: {
+        useHTML: true,
+        headerFormat: '<table>',
+        pointFormat: '<tr><th colspan="2"><h3>{point.title}</h3></th></tr>' +
+            '<tr><th>Subjectivity:</th><td>{point.y}</td></tr>' +
+            '<tr><th>Sentiment:</th><td>{point.x}</td></tr>' +
+            '<tr><th>Tweets:</th><td>{point.z}</td></tr>',
+        footerFormat: '</table>',
+        followPointer: true
+    },
+
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: false,
+                format: '{point.name}'
+            }
+        }
+    },
+
+    series: [{
+        data: [
+            {% for story in stories %}
+            { x: {{story.sentiment}}, y: {{story.subjectivity}}, z: {{ story.tweets | sum(attribute='retweets') }}, title: "{{story.title}}" },
+            {% endfor %}
+        ]
+    }]
+
+});
+
+// ---------------------------
+
+Highcharts.chart('tags', {
+  chart: {
+    type: 'packedbubble',
+    height: screen.height-100
+  },
+  title: {
+    text: 'Mention of Various Topics in NYT'
+  },
+  tooltip: {
+    useHTML: true,
+    pointFormat: '<b>{point.name}:</b> {point.y} mentions'
+  },
+  plotOptions: {
+    packedbubble: {
+      dataLabels: {
+        enabled: true,
+        format: '{point.name}',
+        filter: {
+          property: 'y',
+          operator: '>',
+          value: 0
+        },
+        style: {
+          color: 'black',
+          textOutline: 'none',
+          fontWeight: 'normal'
+        }
+      },
+      minPointSize: 5
+    }
+  },
+  series: [{
+    name: 'Topics covered',
+    data: [
+    {% for x, v in tagcounter %}
+            {% if v > 10 %}
+
+            {
+              name: "{{x}}",
+              value: {{v}}
+            },
+            {% endif %}
+    {% endfor %}
+  ]}],
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        legend: {
+          align: 'right',
+          verticalAlign: 'middle',
+          layout: 'vertical'
+        }
+      }
+    }]
+  }
+});
+
+
+</script>
+{% endblock %}

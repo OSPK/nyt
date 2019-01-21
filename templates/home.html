@@ -32,7 +32,7 @@
     <tbody>
         {% for author in authors %}
         <tr>
-            <td data-th="Author"><a href="/author/{{author.id}}">{{author.name}}</a></td>
+            <td data-th="Author"><a href="{{url_for('author', id=author.id)}}">{{author.name}}</a></td>
             <td data-th="Stories">{{austories[author.name]|length}}</td>
             {% set sentiment = austories[author.name]|sum(attribute='sentiment') / austories[author.name]|length %}
             <td data-th="Sentiment">{{ '%0.4f' % sentiment|float }}</td>
@@ -59,7 +59,7 @@
     <tbody>
         {% for story in stories %}
         <tr>
-            <td data-th="Story"><a href="/story/{{story.id}}">{{story.title}}</a></td>
+            <td data-th="Story"><a href="{{url_for('story', id=story.id)}}">{{story.title}}</a></td>
             <td data-th="Sentiment">{{ '%0.4f' % story.sentiment | float }}</td>
             <td data-th="Subjectivity">{{ '%0.4f' % story.subjectivity | float }}</td>
             <td data-th="Retweets">{{ story.tweets | sum(attribute='retweets') }}</td>

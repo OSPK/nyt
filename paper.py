@@ -108,6 +108,12 @@ class Tweet(db.Model):
     link = db.Column(db.String(980))
     sentiment =  db.Column(db.String(380))
 
+
+@app.route('/<path:path>')
+def static_file(path):
+    return app.send_static_file(path)
+
+
 @app.route("/")
 def hello():
     authors = Author.query.all()

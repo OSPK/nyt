@@ -111,9 +111,7 @@ class Tweet(db.Model):
 
 @app.route('/static/<path>')
 def static_file(path):
-    if path is "styles":
-        ext = css
-    ff = path + "." +ext
+    ff = path + ".css"
     print("working")
     return app.send_static_file(ff)
 

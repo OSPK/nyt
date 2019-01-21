@@ -17,10 +17,28 @@
 {% block content %}
 <div class="text-content">
     <p>For better of for worse, New York Times is one of the leading newspapers of the world. It is what is called the "agenda-setting media" and has been leading the American public as well as policy discourse for a very long time. However, when it comes to Middle-East, South-Asia, or much of the global south, NYT's coverage seems either lacking in depth or too agenda driven. Apart from arguing with anecdotal evidence or conjecture we have not been able to say much about that. We do not yet have tools at our disposal that can accurately predict media bias - intentional or unintentional - or scientifically prove agenda-driven reporting even with multitude of language processing and machine learning tools available at our disposal today.</p>
+    <p>However, there are a few tools at our disposal that can give us some quantitative data related to any given text. While methods and tools used here may not be 100% accurate, the do give us some idea about the texts analyzed.</p>
+    <p>For current analysis, we only used NYT articles related to Pakistan. NYT publishes dozens of articles daily, so to narrow down to only relevant articles we chose the ones that contained the word "Pakistan" in the headline and were published between 1st January 2018 and 31st December 2018.</p>
+    <p>In 2018 there were 118 articles on NYT that contained the word 'Pakistan' in the headline, excluding non-text audio or video based content that we could not analyze.</p>
+    <h2>Sentiment Analysis</h2>
+    <p>Sentiment Analysis is quantitatively identifying and categorizing opinions expressed in a piece of text, especially in order to determine whether the writer's attitude towards a particular topic, product, etc. is positive, negative, or neutral. A negative (-ve) score means a negative attitude, positive score (+ve) denotes a positive attitude. Sentiment analysis scores vary from -1 to +1, -1 being the most negative and +1 being the most positive.</p>
+    <p>For sentiment analysis we used VADER (Valence Aware Dictionary and sEntiment Reasoner) [<a href="https://github.com/cjhutto/vaderSentiment">link</a>]. VADER has been tested on social media texts as well as New York Times editorials, hence most relevant tool for our analysis. We ran a sentiment analysis on each sentence contained within the articles.</p>
+    <p>Since each sentence had a different sentiment score, we took the mean sentiment score of all sentences to calculate the overall sentiment of an article.</p>
+    <p>The results of sentiment analysis of all 118 articles under discussion is shown in the chart below.</p>
 </div>
 <div class="ct-chart ct-perfect-fourth"></div>
+<div class="text-content">
+    <p>We can see that out of the 118 articles, most of the articles have a negative sentiment. Hence, we can say with some confidence that overall sentiment of NYT's Pakistan coverage has been negative.</p>
+    <h2>Objectivity Analysis</h2>
+    <p>One can argue that if most of the events in Pakistan in 2018 have been negative, NYT cannot give a positive spin to those just to give a positive sentiment. This is a valid argument if we only consider sentiment score, so we also need to check if the articles have been significantly objective.</p>
+    <p>To check the objectivity of given articles, we used another textual data processing tool called <a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a>. TextBlob provides Subjectivity scores for each given sentence. Just like sentiment analysis, we ran subjectivity analysis on each sentence of every article. The total subjectivity score for an article was calculated by taking mean subjectivity scores of all sentences in that article. Subjectivity score range between 0 to 1, 0 being the most objective and 1 being completely subjective.</p>
+    <p>In the below chart we have plotted each article on x-axis according to its sentiment score and on y-axis according to the subjectivity score. The size of each bubble represents the popularity of each article in terms of retweets on Twitter.</p>
+</div>
 <div id="chart2" class="ct-chart chart2 ct-perfect-fourth" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
-
+<div class="text-content">
+    <p>Subjectivity scores above 0.25 being considered somewhat subjective, we can see in the chart above that most of the articles analyzed have been rated subjective.</p>
+</div>
+<div id="chart3" class="ct-chart chart2 ct-perfect-fourth" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
 
 
 <div id="tags"></div>
@@ -54,7 +72,7 @@
     };
 
     var data2 = {
-      labels: [{% for story in stories %}"{{story.id}}",{% endfor %}],
+      labels: [{% for story in stories %}"{{story.sentiment}}",{% endfor %}],
       series: [
       [{% for story in stories %}{
         meta:"{{story.title}}", value:{{story.subjectivity}}
@@ -86,7 +104,79 @@
     };
 
     new Chartist.Bar('.ct-chart', data, options);
-    //new Chartist.Line('.chart2', data2, options2);
+
+
+Highcharts.chart('chart3', {
+  chart: {
+    type: 'scatter',
+    zoomType: 'xy'
+  },
+  title: {
+    text: 'Height Versus Weight of 507 Individuals by Gender'
+  },
+  subtitle: {
+    text: 'Source: Heinz  2003'
+  },
+  xAxis: {
+    title: {
+      enabled: true,
+      text: 'Height (cm)'
+    },
+    startOnTick: true,
+    endOnTick: true,
+    showLastLabel: true
+  },
+  yAxis: {
+    title: {
+      text: 'Weight (kg)'
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'left',
+    verticalAlign: 'top',
+    x: 100,
+    y: 70,
+    floating: true,
+    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+    borderWidth: 1
+  },
+  plotOptions: {
+    scatter: {
+      marker: {
+        radius: 5,
+        states: {
+          hover: {
+            enabled: true,
+            lineColor: 'rgb(100,100,100)'
+          }
+        }
+      },
+      states: {
+        hover: {
+          marker: {
+            enabled: false
+          }
+        }
+      },
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.x} cm, {point.y} kg'
+      }
+    }
+  },
+  series: [{
+    name: 'Male',
+    color: 'rgba(119, 152, 191, .5)',
+    data: [
+    {% for story in stories %}
+    [{{story.sentiment}}, {{story.subjectivity}}],
+    {% endfor %}
+    ]
+  }]
+});
+
+
 
 
 Highcharts.chart('chart2', {

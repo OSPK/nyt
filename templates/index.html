@@ -46,24 +46,27 @@
         <link rel="apple-touch-icon" sizes="152x152" href="https://en.dailypakistan.com.pk/wp-content/themes/century/images/icons/xapple-touch-icon-152x152.png.pagespeed.ic.oXGbUrgRl3.png"/>
         <link rel="apple-touch-icon" sizes="180x180" href="https://en.dailypakistan.com.pk/wp-content/themes/century/images/icons/xapple-touch-icon-180x180.png.pagespeed.ic.LJT6-R7oi8.png"/>
         <meta property='fb:app_id' content='388666161164782'/>
+        <meta property='og:site_name' content='Daily Pakistan Global'/>
+        <meta property='og:image' content=''/>
+        <meta name='twitter:image' content=''/>
+
+        {% block metas %}
+        <meta property='og:url' content=''/>
         <meta name='description' content=''/>
         <meta property='og:title' content=''/>
-        <meta property='og:site_name' content='Daily Pakistan Global'/>
-        <meta property='og:url' content=''/>
+        <meta name='twitter:title' content=''/>
         <meta property='og:description' content=''/>
-        <meta property='og:image' content=''/>
+        <meta name='twitter:description' content=''/>
+        <link rel="canonical" href=""/>
+        {% endblock %}
+        
         <meta property='og:type' content='article'/>
         <meta property='og:locale' content='en_US'/>
         <meta property='article:author' content='https://www.facebook.com/waqas.x'/>
         <meta property='article:publisher' content='https://www.facebook.com/dailypakistan.en'/>
         <meta name='twitter:card' content='summary_large_image'/>
         <meta name='twitter:site' content='@dailypakistangl'>
-        <meta name='twitter:description' content=''/>
-        <meta name='twitter:title' content=''/>
-        <meta name='twitter:image' content=''/>
         <meta property='fb:pages' content='626008714145711'/>
-        <meta name="description" content=""/>
-        <link rel="canonical" href=""/>
         <link rel="publisher" href="https://plus.google.com/u/1/+DailypakistanPknews"/>
         <style>
             @import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,700);.chartist-tooltip,.ct-area,.ct-line{pointer-events:none}.rwd-table{margin:1em 0;min-width:300px;background:#34495E;color:#fff;border-radius:.4em;overflow:hidden}.rwd-table tr{border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-color:#46637f}.rwd-table th{display:none}.rwd-table td{display:block}.rwd-table td:first-child{padding-top:.5em}.rwd-table td:last-child{padding-bottom:.5em}.rwd-table td:before{content:attr(data-th) ": ";font-weight:700;width:6.5em;display:inline-block}.rwd-table td,.rwd-table th{text-align:left;margin:.5em 1em}@media (min-width:480px){.rwd-table td:before{display:none}.rwd-table td:first-child,.rwd-table th:first-child{padding-left:0}.rwd-table td:last-child,.rwd-table th:last-child{padding-right:0}.rwd-table td,.rwd-table th{display:table-cell;padding:1em!important}}.rwd-table td:before,.rwd-table th{color:#dd5}.chartist-tooltip{position:absolute;display:inline-block;opacity:0;min-width:5em;padding:.5em;background:#efefef;color:#453D3F;border:2px solid #83b9ec;font-family:Oxygen,Helvetica,Arial,sans-serif;font-weight:700;text-align:center;z-index:1;-webkit-transition:opacity .2s linear;-moz-transition:opacity .2s linear;-o-transition:opacity .2s linear;transition:opacity .2s linear}.chartist-tooltip:before{content:"";position:absolute;top:100%;left:50%;width:0;height:0;margin-left:-15px;border:15px solid transparent;border-top-color:#83b9ec}.chartist-tooltip.tooltip-show{opacity:1}.ct-series-a .ct-bar,.ct-series-a .ct-line,.ct-series-a .ct-point,.ct-series-a .ct-slice-donut{stroke:#498ece}.dataTables_wrapper .dataTables_paginate .paginate_button.current,.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{color:#fff!important;border:1px solid #f3f3f3!important;background:#34495e!important}.dataTables_wrapper .dataTables_paginate .paginate_button:hover{color:#fff!important;border:1px solid #111;background:#585858}body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-family:Aleo,serif}.h1,.h2,.h3,.h4,.h5,h1,h2,h3,h4,h5{font-family:'Fira Sans',sans-serif}.header{background:url(https://en.dailypakistan.com.pk/wp-content/uploads/2019/01/bg.jpeg) #000;color:#efefef;position:relative;padding:0;background-size:cover;margin-bottom:2rem}.text-content{word-break:keep-all;line-height:2.2rem}.text-content p{font-size:1.3rem}.cover{background:rgba(0,0,0,.8);position:absolute;width:100%;height:100%}.cover>div{max-width:100%}.twitter-blue{color:#1DA1F2}.twitter-red{color:#e0245e}.facebook-blue{color:#3b5998}.form-control-borderless{border:none}.form-control-borderless:active,.form-control-borderless:focus,.form-control-borderless:hover{border:none;outline:0;box-shadow:none}a.logo{text-align:center;width:100%;display:block;margin:1rem 0}a.logo img{width:200px}.auth-list{white-space:nowrap}table.dataTable tbody tr{background-color:#fff0}.rwd-table tbody tr td a{color:#d9e9f2}@media only screen and (min-width :1024px){.header h1{font-size:3.3rem}}
@@ -73,6 +76,10 @@
                 }
                 body {
                     margin-top:66px;
+                }
+                .text-content {
+                    max-width: 700px;
+                    margin: auto;
                 }
                 @media only screen and (max-width:480px){
                     .dropdown-menu{

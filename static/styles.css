@@ -129,7 +129,7 @@ h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
 }
 .header {
     background:black;
-    background-image: url('/labs/nyt/static/bg.jpeg');
+    background-image: url('https://en.dailypakistan.com.pk/wp-content/uploads/2019/01/bg.jpeg');
     color:#efefef;
     position: relative;
     padding: 0px;

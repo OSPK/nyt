@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<table class="rwd-table authortable">
+    <thead>
+        <tr>
+            <th>Author</th>
+            <th>Stories</th>
+            <th>Sentiment</th>
+            <th>Subjectivity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for author in authors %}
+        <tr>
+            <td data-th="Author"><a href="{{url_for('author', id=author.id)}}">{{author.name}}</a></td>
+            <td data-th="Stories">{{austories[author.name]|length}}</td>
+            {% set sentiment = austories[author.name]|sum(attribute='sentiment') / austories[author.name]|length %}
+            <td data-th="Sentiment">{{ '%0.4f' % sentiment|float }}</td>
+            {% set subjectivity = austories[author.name]|sum(attribute='subjectivity') / austories[author.name]|length%}
+            <td data-th="Subjectivity">{{ '%0.4f' % subjectivity|float }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    $(document).ready( function () {
+        $('.authortable').DataTable({
+            "order": [[ 1, "desc" ]],
+            "pageLength": 5
+        });
+    });
+
+</script>
+{% endblock %}

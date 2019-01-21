@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<h1>All Stories</h1>
+<table class="table table-inverse rwd-table storytable">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Sentiment</th>
+            <th>Subjectivity</th>
+            <th>Retweets</th>
+            <th>Likes</th>
+            <th>Replies</th>
+            <th>FB Shares</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for story in stories %}
+        <tr>
+            <td data-th="Story"><a href="{{url_for('story', id=story.id)}}">{{story.title}}</a></td>
+            <td data-th="Sentiment">{{ '%0.4f' % story.sentiment | float }}</td>
+            <td data-th="Subjectivity">{{ '%0.4f' % story.subjectivity | float }}</td>
+            <td data-th="Retweets">{{ story.tweets | sum(attribute='retweets') }}</td>
+            <td data-th="Likes">{{ story.tweets | sum(attribute='likes') }}</td>
+            <td data-th="Replies">{{ story.tweets | sum(attribute='replies') }}</td>
+            <td data-th="Facebook Shares">{{ story.fb_shares }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready( function () {
+        $('.storytable').DataTable({
+            "order": [[ 3, "desc" ]],
+            "pageLength": 5
+        });
+    });
+
+</script>
+{% endblock %}

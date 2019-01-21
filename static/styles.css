@@ -173,7 +173,24 @@ h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
 }
 
 
-
+a.logo {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: 1rem 0rem;
+}
+a.logo img {
+    width: 200px;
+}
+.auth-list {
+    white-space: nowrap
+}
+table.dataTable tbody tr {
+    background-color: #fff0;
+}
+.rwd-table tbody tr td a {
+    color: #d9e9f2;
+}
 
 /* MEDIA QUERIES */
 @media only screen and (min-width : 1024px) {

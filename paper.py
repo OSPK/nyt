@@ -109,9 +109,11 @@ class Tweet(db.Model):
     sentiment =  db.Column(db.String(380))
 
 
-@app.route('/static/<path>')
-def static_file(path):
-    return app.send_static_file(path)
+@app.route('/static/<path>.<ext>')
+def static_file(path, ext):
+    ff = path + "." +ext
+    print("working")
+    return app.send_static_file(ff)
 
 
 @app.route("/")

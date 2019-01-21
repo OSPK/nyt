@@ -109,14 +109,14 @@ class Tweet(db.Model):
     sentiment =  db.Column(db.String(380))
 
 
-@app.route('/static/<path>')
-def static_file(path):
-    if path == "styles" or path == "awesomplete":
-        ff = path + ".css"
-    else:
-        ff = path + ".js"
-    print("working")
-    return app.send_static_file(ff)
+# @app.route('/static/<path>')
+# def static_file(path):
+#     if path == "styles" or path == "awesomplete":
+#         ff = path + ".css"
+#     else:
+#         ff = path + ".js"
+#     print("working")
+#     return app.send_static_file(ff)
 
 
 @app.route("/")

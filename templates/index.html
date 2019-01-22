@@ -14,7 +14,6 @@
         <link href="https://fonts.googleapis.com/css?family=Aleo" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.4/awesomplete.css" />
-        <link rel="stylesheet" href="/labs/nyt/static/styles.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,6 +44,15 @@
         <link rel="apple-touch-icon" sizes="144x144" href="https://en.dailypakistan.com.pk/wp-content/themes/century/images/icons/xapple-touch-icon-144x144.png.pagespeed.ic.umjyuXzZ--.png"/>
         <link rel="apple-touch-icon" sizes="152x152" href="https://en.dailypakistan.com.pk/wp-content/themes/century/images/icons/xapple-touch-icon-152x152.png.pagespeed.ic.oXGbUrgRl3.png"/>
         <link rel="apple-touch-icon" sizes="180x180" href="https://en.dailypakistan.com.pk/wp-content/themes/century/images/icons/xapple-touch-icon-180x180.png.pagespeed.ic.LJT6-R7oi8.png"/>
+
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2&appId=388666161164782&autoLogAppEvents=1';
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
         <meta property='fb:app_id' content='388666161164782'/>
         <meta property='og:site_name' content='Daily Pakistan Global'/>
         <meta property='og:image' content='https://en.dailypakistan.com.pk/wp-content/uploads/2019/01/nyt-cover.jpg'/>
@@ -85,6 +93,9 @@
                 a.card:hover {
                   color: #212529;
                   text-decoration: none;
+                }
+                th:nth-child(n+2), td:nth-child(n+2) {
+                    font-size: 0.8rem;
                 }
                 @media only screen and (max-width:480px){
                     .dropdown-menu{

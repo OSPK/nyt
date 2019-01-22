@@ -48,7 +48,7 @@
             <td>{{ story.tweets | sum(attribute='likes') }}</td>
             <td>{{ story.tweets | sum(attribute='replies') }}</td>
             <td>{{ '%0.4f' % story.sentiment | float }}</td>
-            <td>{{ '%0.4f' % story.subjectivity | float }}</td>
+            <td>{{ ' %0.4f' % story.subjectivity | float }}</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -1,5 +1,15 @@
 {% extends 'index.html' %}
 
+{% block metas %}
+    <meta property='og:url' content='https://en.dailypakistan.com.pk/labs/nyt-pakistan-coverage-2018/'/>
+    <meta property='og:title' content="118 Articles, 1 Year - An Analysis of New York Times' Coverage of Pakistan"/>
+    <meta name='twitter:title' content='118 Articles, 1 Year - An Analysis of New York Times' Coverage of Pakistan'/>
+    <meta property='og:description' content=''/>
+    <meta name='twitter:description' content=''/>
+    <meta name='description' content="An analysis of New York Times' coverage of Pakistan in 2018"/>
+    <link rel="canonical" href="https://en.dailypakistan.com.pk/labs/nyt-pakistan-coverage-2018/"/>
+{% endblock %}
+
 {% block header %}
 <div class="container-fluid d-flex header">
     <div class="cover">
@@ -26,22 +36,26 @@
     <p>Since each sentence had a different sentiment score, we took the mean sentiment score of all sentences to calculate the overall sentiment of an article.</p>
     <p>The results of sentiment analysis of all 118 articles under discussion is shown in the chart below.</p>
 </div>
-<div class="ct-chart ct-perfect-fourth"></div>
+<div id="chart1" class="" style="height: 800px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
 <div class="text-content">
-    <p>We can see that out of the 118 articles, most of the articles have a negative sentiment. Hence, we can say with some confidence that overall sentiment of NYT's Pakistan coverage has been negative.</p>
+    <p>We can see that out of the 118 articles, most of the articles have a negative sentiment and the chart is heavily skewed towards the left. Hence, we can say with some confidence that overall sentiment of NYT's Pakistan coverage has been negative.</p>
     <h2>Objectivity Analysis</h2>
     <p>One can argue that if most of the events in Pakistan in 2018 have been negative, NYT cannot give a positive spin to those just to give a positive sentiment. This is a valid argument if we only consider sentiment score, so we also need to check if the articles have been significantly objective.</p>
     <p>To check the objectivity of given articles, we used another textual data processing tool called <a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a>. TextBlob provides Subjectivity scores for each given sentence. Just like sentiment analysis, we ran subjectivity analysis on each sentence of every article. The total subjectivity score for an article was calculated by taking mean subjectivity scores of all sentences in that article. Subjectivity score range between 0 to 1, 0 being the most objective and 1 being completely subjective.</p>
-    <p>In the below chart we have plotted each article on x-axis according to its sentiment score and on y-axis according to the subjectivity score. The size of each bubble represents the popularity of each article in terms of retweets on Twitter.</p>
+    <p>In the below chart we have plotted each article on x-axis according to its sentiment score and on y-axis according to the subjectivity score.</p>
 </div>
-<div id="chart2" class="ct-chart chart2 ct-perfect-fourth" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
+<div id="chart3" class="" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
 <div class="text-content">
     <p>Subjectivity scores above 0.25 being considered somewhat subjective, we can see in the chart above that most of the articles analyzed have been rated subjective.</p>
+    <p>The same chart is given below with an added dimension of impact of the stories in terms of traction on social media, calculated in terms of the number of tweets and retweets.</p>
 </div>
-<div id="chart3" class="ct-chart chart2 ct-perfect-fourth" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
+<div id="chart2" class="" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
+<div class="text-content">
+    <p>We can see that most impactful stories by NYT have been somewhat subjective and that majority of them lie on the negative side of sentiment scores.</p>
+</div>
 
 
-<div id="tags"></div>
+<div id="tags" style="height: auto; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
 
 
 
@@ -61,50 +75,67 @@
         $(".header").css("height", h-100);
     });
 
-    var data = {
-      labels: [{% for story in stories %}"{{story.id}}",{% endfor %}],
-      series: [
-      [{% for story in stories %}{
-      meta:"{{story.title}}", value:{{story.sentiment}}
-       }
-      ,{% endfor %}]
-      ]
-    };
 
-    var data2 = {
-      labels: [{% for story in stories %}"{{story.sentiment}}",{% endfor %}],
-      series: [
-      [{% for story in stories %}{
-        meta:"{{story.title}}", value:{{story.subjectivity}}
-       }
-      ,{% endfor %}]
-      ]
-    };
+// Story categories
+var categories = [
+        {% for story in stories %}
+            '{{loop.index+1}}',
+        {% endfor %}
+];
 
-    var options = {
-      high: 1,
-      low: -1,
-      //horizontalBars: true,
-      plugins: [Chartist.plugins.tooltip()],
-      axisX: {
-        labelInterpolationFnc: function(value, index) {
-          return index % 2 === 0 ? "" : null;
+Highcharts.chart('chart1', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Sentiment scores for NYT aricles about Pakistan'
+    },
+    xAxis: [{
+        title: {
+          enabled: true,
+          text: 'Stories'
+        },
+        reversed: false,
+        labels: {
+            enabled: false
+        },
+    }
+    ],
+    yAxis: {
+        title: {
+            text: "Sentiment"
+        },
+        labels: {
+            formatter: function () {
+                return this.value;
+            }
         }
-      }
-    };
-
-    var options2 = {
-      showLine: false,
-      plugins: [Chartist.plugins.tooltip()],
-      axisX: {
-        labelInterpolationFnc: function(value, index) {
-          return index % 200 === 0 ? "" : null;
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
         }
-      }
-    };
+    },
 
-    new Chartist.Bar('.ct-chart', data, options);
+    tooltip: {
+        formatter: function () {
+            return '<b>' + this.point.title + '</b><br/>' +
+                'Sentiment: ' + Highcharts.numberFormat((this.point.y));
+        }
+    },
 
+    series: [{
+        name: 'Stories',
+        data: [
+            {% for story in stories %}
+                { y: {{story.sentiment}}, title: "{{story.title}}" },
+            {% endfor %}
+        ]
+    }]
+});
 
 Highcharts.chart('chart3', {
   chart: {
@@ -112,34 +143,64 @@ Highcharts.chart('chart3', {
     zoomType: 'xy'
   },
   title: {
-    text: 'Height Versus Weight of 507 Individuals by Gender'
-  },
-  subtitle: {
-    text: 'Source: Heinz  2003'
+    text: 'Sentiment vs Subjectivity of NYT Articles'
   },
   xAxis: {
     title: {
       enabled: true,
-      text: 'Height (cm)'
+      text: 'Sentiment Score'
     },
+    gridLineWidth: 1,
     startOnTick: true,
     endOnTick: true,
-    showLastLabel: true
+    showLastLabel: true,
+    plotLines: [{
+        color: 'black',
+        dashStyle: 'dot',
+        width: 2,
+        value: 0,
+        label: {
+            rotation: 0,
+            y: 15,
+            style: {
+                fontStyle: 'italic'
+            },
+            text: 'Neutral Sentiment'
+        },
+        zIndex: 3
+    }]
   },
   yAxis: {
     title: {
       text: 'Weight (kg)'
-    }
+    },
+    startOnTick: false,
+    endOnTick: false,
+    title: {
+        text: 'Subjectivity Score'
+    },
+    labels: {
+        format: '{value}'
+    },
+    maxPadding: 0.2,
+    plotLines: [{
+        color: 'black',
+        dashStyle: 'dot',
+        width: 2,
+        value: 0.25,
+        label: {
+            align: 'right',
+            style: {
+                fontStyle: 'italic'
+            },
+            text: 'Subjectivity Score 0.25',
+            x: -10
+        },
+        zIndex: 3
+    }]
   },
   legend: {
-    layout: 'vertical',
-    align: 'left',
-    verticalAlign: 'top',
-    x: 100,
-    y: 70,
-    floating: true,
-    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-    borderWidth: 1
+    enabled: false
   },
   plotOptions: {
     scatter: {
@@ -160,27 +221,25 @@ Highcharts.chart('chart3', {
         }
       },
       tooltip: {
-        headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x} cm, {point.y} kg'
+        useHTML: true,
+        pointFormat: '<b>{point.title}</b><br>' +
+            'Subjectivity: <b>{point.y}</b><br>' +
+            'Sentiment: <b>{point.x}</b><br>',
+        followPointer: true
       }
     }
   },
   series: [{
-    name: 'Male',
-    color: 'rgba(119, 152, 191, .5)',
+    color: 'rgba(119, 152, 191, .7)',
     data: [
     {% for story in stories %}
-    [{{story.sentiment}}, {{story.subjectivity}}],
+        { x: {{story.sentiment}}, y: {{story.subjectivity}}, title: "{{story.title}}" },
     {% endfor %}
     ]
   }]
 });
 
-
-
-
 Highcharts.chart('chart2', {
-
     chart: {
         type: 'bubble',
         plotBorderWidth: 1,
@@ -192,7 +251,7 @@ Highcharts.chart('chart2', {
     },
 
     title: {
-        text: 'Subjectivity of NYT Articles'
+        text: 'Sentiment vs Subjectivity of NYT Articles'
     },
 
     // subtitle: {
@@ -254,7 +313,7 @@ Highcharts.chart('chart2', {
     tooltip: {
         useHTML: true,
         headerFormat: '<table>',
-        pointFormat: '<tr><th colspan="2"><h3>{point.title}</h3></th></tr>' +
+        pointFormat: '<tr><th colspan="2"><h5>{point.title}</h5></th></tr>' +
             '<tr><th>Subjectivity:</th><td>{point.y}</td></tr>' +
             '<tr><th>Sentiment:</th><td>{point.x}</td></tr>' +
             '<tr><th>Tweets:</th><td>{point.z}</td></tr>',
@@ -278,10 +337,7 @@ Highcharts.chart('chart2', {
             {% endfor %}
         ]
     }]
-
 });
-
-// ---------------------------
 
 Highcharts.chart('tags', {
   chart: {
@@ -294,6 +350,9 @@ Highcharts.chart('tags', {
   tooltip: {
     useHTML: true,
     pointFormat: '<b>{point.name}:</b> {point.y} mentions'
+  },
+  legend: {
+        enabled: false
   },
   plotOptions: {
     packedbubble: {

@@ -36,12 +36,10 @@
 <div class="results" style="min-height:600px;">
     {% for story in stories %}
         {% if story.id in results %}
-            <a href="/story/{{story.id}}" >{{story.title}}</a> <a href="{{story.url}}"><i class="fas fa-external-link-square-alt"></i></a>
+            <h5><a href="{{url_for('story', id=story.id)}}" >{{story.title}}</a></h5> <a href="{{story.url}}">Story <i class="fas fa-external-link-square-alt"></i></a>
             by {% for author in story.authors %} 
             {{author.name}} {%if story.authors|length > 1 and loop.index < story.authors|length%}and{%endif%} 
             {% endfor %} on {{story.pub_date|datetime}}
-
-             | {{"%0.4f"%story.sentiment|float}} | {{"%0.4f"%story.subjectivity|float}} |
             <hr>
         {% endif %}
     {% endfor %}

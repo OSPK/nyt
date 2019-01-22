@@ -40,8 +40,8 @@ class PrefixMiddleware(object):
             start_response('404', [('Content-Type', 'text/plain')])
             return ["This url does not belong to the app.".encode()]
 
-app.config['APPLICATION_ROOT'] = '/labs/nyt'
-app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix='/labs/nyt')
+app.config['APPLICATION_ROOT'] = '/labs/nyt-pakistan-coverage-2018'
+app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix='/labs/nyt-pakistan-coverage-2018')
 
 
 def format_datetime2(value, format='medium'):

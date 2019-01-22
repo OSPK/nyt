@@ -14,7 +14,7 @@ import pygal
 from babel.dates import format_datetime
 import datetime
 from collections import Counter
-from flask.ext.cache import Cache
+from flask_cache import Cache
 
 
 app = Flask(__name__)

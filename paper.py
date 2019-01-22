@@ -14,6 +14,7 @@ import pygal
 from babel.dates import format_datetime
 import datetime
 from collections import Counter
+from flask_cache import Cache
 
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # db.create_all()
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 class PrefixMiddleware(object):
 
@@ -110,7 +112,7 @@ class Tweet(db.Model):
     link = db.Column(db.String(980))
     sentiment =  db.Column(db.String(380))
 
-
+@cache.cached(timeout=50)
 @app.route("/")
 def hello():
     stories = Story.query.all()
@@ -135,21 +137,21 @@ def hello():
 
     return render_template('home.html', stories=stories, tagcounter=tagcounter)
 
-
+@cache.cached(timeout=50)
 @app.route("/stories/")
 def stories():
     stories = Story.query.all()
 
     return render_template('stories.html', stories=stories)
 
-
+@cache.cached(timeout=50)
 @app.route("/story/<id>")
 def story(id):
     story = Story.query.get(id)
 
     return render_template('story.html', story=story)
 
-
+@cache.cached(timeout=50)
 @app.route("/search/", methods = ['GET', 'POST'])
 def search():
     stories = Story.query.all()
@@ -165,7 +167,7 @@ def search():
 
     return render_template('search.html', stories=stories, words=words, results=results, searchterm=searchterm)
 
-
+@cache.cached(timeout=50)
 @app.route("/authors/")
 def authors():
     authors = Author.query.all()
@@ -179,7 +181,7 @@ def authors():
 
     return render_template('authors.html', authors=authors, austories=austories)
 
-
+@cache.cached(timeout=50)
 @app.route("/author/<id>")
 def author(id):
     author = Author.query.get(id)

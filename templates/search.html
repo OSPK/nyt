@@ -38,7 +38,7 @@
         {% if story.id in results %}
             <h5><a href="{{url_for('story', id=story.id)}}" >{{story.title}}</a></h5> <a href="{{story.url}}">Story <i class="fas fa-external-link-square-alt"></i></a>
             by {% for author in story.authors %} 
-            {{author.name}} {%if story.authors|length > 1 and loop.index < story.authors|length%}and{%endif%} 
+            <b>{{author.name}}</b> {%if story.authors|length > 1 and loop.index < story.authors|length%}and{%endif%} 
             {% endfor %} on {{story.pub_date|datetime}}
             <hr>
         {% endif %}

@@ -1,7 +1,11 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<h1 class="pt-4">All Authors</h1>
+<h1 class="pt-4">Authors</h1>
+
+<div id="aucontainer" style="height: 600px; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
+
+<h2>List of all authors</h2>
 <table class="rwd-table authortable">
     <thead>
         <tr>
@@ -37,5 +41,107 @@
         });
     });
 
+
+
+Highcharts.chart('aucontainer', {
+
+  chart: {
+    type: 'bubble',
+    plotBorderWidth: 1,
+    zoomType: 'xy'
+  },
+
+  legend: {
+    enabled: false
+  },
+
+  title: {
+    text: 'Sentiment and Subjectivity analysis of NYT authors'
+  },
+
+  xAxis: {
+    gridLineWidth: 1,
+    title: {
+      text: 'Sentiment Scores'
+    },
+    labels: {
+      format: '{value}'
+    },
+    plotLines: [{
+      color: 'black',
+      dashStyle: 'dot',
+      width: 2,
+      value: 0,
+      label: {
+        rotation: 0,
+        y: 15,
+        style: {
+          fontStyle: 'italic'
+        },
+        text: 'Neutral'
+      },
+      zIndex: 3
+    }]
+  },
+
+  yAxis: {
+    startOnTick: false,
+    endOnTick: false,
+    title: {
+      text: 'Subjectivity Scores'
+    },
+    labels: {
+      format: '{value}'
+    },
+    maxPadding: 0.2,
+    plotLines: [{
+      color: 'black',
+      dashStyle: 'dot',
+      width: 2,
+      value: 0.25,
+      label: {
+        align: 'right',
+        style: {
+          fontStyle: 'italic'
+        },
+        text: '0.25 Subjectivity',
+        x: -10
+      },
+      zIndex: 3
+    }]
+  },
+
+  tooltip: {
+    useHTML: true,
+    headerFormat: '<table>',
+    pointFormat: '<tr><th colspan="2"><h5>{point.title}</h5></th></tr>' +
+      '<tr><th>Stories: </th><td>{point.z}</td></tr>' +
+      '<tr><th>Sentiment: </th><td>{point.x}</td></tr>' +
+      '<tr><th>Subjectivity: </th><td>{point.y}</td></tr>',
+      
+    footerFormat: '</table>',
+    followPointer: true
+  },
+
+  plotOptions: {
+    series: {
+      dataLabels: {
+        enabled: true,
+        format: '{point.name}'
+      }
+    }
+  },
+
+  series: [{
+    data: [
+    {% for author in authors %}
+      {% set sentiment = austories[author.name]|sum(attribute='sentiment') / austories[author.name]|length %}
+      {% set subjectivity = austories[author.name]|sum(attribute='subjectivity') / austories[author.name]|length %}
+      { x: {{sentiment}}, y: {{subjectivity}}, z: {{austories[author.name]|length}}, title: '{{author.name}}' },
+    {% endfor %}
+    ]
+  }]
+
+});
 </script>
 {% endblock %}

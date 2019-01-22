@@ -89,6 +89,7 @@ class Story(db.Model):
     tags = db.relationship('Tag', secondary=tags, lazy='subquery', backref=db.backref('story', lazy=True))
     tweets = db.relationship('Tweet', secondary=tweets, lazy='subquery', backref=db.backref('story', lazy=True))
 
+
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
@@ -97,6 +98,7 @@ class Author(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(120))
+
 
 class Tweet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -107,16 +109,6 @@ class Tweet(db.Model):
     replies =  db.Column(db.Integer)
     link = db.Column(db.String(980))
     sentiment =  db.Column(db.String(380))
-
-
-# @app.route('/static/<path>')
-# def static_file(path):
-#     if path == "styles" or path == "awesomplete":
-#         ff = path + ".css"
-#     else:
-#         ff = path + ".js"
-#     print("working")
-#     return app.send_static_file(ff)
 
 
 @app.route("/")
@@ -143,6 +135,7 @@ def hello():
 
     return render_template('home.html', stories=stories, tagcounter=tagcounter)
 
+
 @app.route("/stories/")
 def stories():
     stories = Story.query.all()
@@ -155,6 +148,7 @@ def story(id):
     story = Story.query.get(id)
 
     return render_template('story.html', story=story)
+
 
 @app.route("/search/", methods = ['GET', 'POST'])
 def search():
@@ -171,6 +165,7 @@ def search():
 
     return render_template('search.html', stories=stories, words=words, results=results, searchterm=searchterm)
 
+
 @app.route("/authors/")
 def authors():
     authors = Author.query.all()
@@ -183,6 +178,7 @@ def authors():
         austories[author.name] = storiesa
 
     return render_template('authors.html', authors=authors, austories=austories)
+
 
 @app.route("/author/<id>")
 def author(id):

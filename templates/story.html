@@ -3,7 +3,7 @@
 {% block title %}{{story.title}} - Article analysis | Daily Pakistan Global{% endblock %}
 
 {% block content %}
-    <a href="{{story.url}}" target="_blank"><h1 class="text-center">{{story.title}}</h1></a>
+    <a href="{{story.url}}" target="_blank"><h1 class="text-center pt-4">{{story.title}}</h1></a>
     <h3 class="text-center">
     by {% for author in story.authors %}
         {{author.name}} {%if story.authors|length > 1 and loop.index < story.authors|length%}and{%endif%}

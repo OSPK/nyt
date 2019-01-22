@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1 class="text-center">{{author.name}}</h1>
+<h1 class="text-center pt-4">{{author.name}}</h1>
 {% set numstories = stories|length %}
 <h4 class="text-center">{{ numstories }} articles</h4><hr>
 {% set sentiment = stories|sum(attribute='sentiment') %}

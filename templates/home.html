@@ -4,9 +4,9 @@
     <meta property='og:url' content='https://en.dailypakistan.com.pk/labs/nyt-pakistan-coverage-2018/'/>
     <meta property='og:title' content="118 Articles, 1 Year - An Analysis of New York Times' Coverage of Pakistan"/>
     <meta name='twitter:title' content='118 Articles, 1 Year - An Analysis of New York Times' Coverage of Pakistan'/>
-    <meta property='og:description' content=''/>
-    <meta name='twitter:description' content=''/>
-    <meta name='description' content="An analysis of New York Times' coverage of Pakistan in 2018"/>
+    <meta property='og:description' content='We analyzed 118 articles about Pakistan published in New York Times in 2018, here are the results'/>
+    <meta name='twitter:description' content='We analyzed 118 articles about Pakistan published in New York Times in 2018, here are the results'/>
+    <meta name='description' content="We analyzed 118 articles about Pakistan published in New York Times in 2018, here are the results"/>
     <link rel="canonical" href="https://en.dailypakistan.com.pk/labs/nyt-pakistan-coverage-2018/"/>
 {% endblock %}
 
@@ -53,8 +53,10 @@
 <div class="text-content">
     <p>We can see that most impactful stories by NYT have been somewhat subjective and that majority of them lie on the negative side of sentiment scores.</p>
 </div>
-
-
+<div class="text-content">
+    <h2>Topics Covered</h2>
+    <p>In terms of topics covered, NYT's coverage of Pakistan in 2018 has not been very diverse and has focused on the usual stories about politics and terrorism, the classic American lens to view Pakistan through.</p>
+</div>
 <div id="tags" style="height: auto; min-width: 310px; max-width: 1200px; width:100%; margin: 0 auto"></div>
 
 
@@ -65,6 +67,40 @@
 <h2>Retweets: 53559</h2>
 <h2>Likes: 99572</h2>
 <h2>Replies: 11068</h2>
+<hr>
+<h4><em>Explore more in this article:</em></h4>
+<div class="row">
+    <div class="card-group">
+        
+
+        <a href="{{url_for('stories')}}" class="card text-white bg-dark mb-3">
+          <div class="card-header">Explore</div>
+          <div class="card-body">
+            <h5 class="card-title">Stories</h5>
+            <p class="card-text">List of all stories about Pakistan in NYT with individual sentiment scores, subjectivity scores, all related tweets and more...</p>
+          </div>
+        </a>
+
+        <a href="{{url_for('authors')}}" class="card text-white bg-secondary mb-3">
+          <div class="card-header">Explore</div>
+          <div class="card-body">
+            <h5 class="card-title">Authors</h5>
+            <p class="card-text">List of all authors in NYT who have written about Pakistan with author analysis and impact.</p>
+          </div>
+        </a>
+
+        <a href="{{url_for('search')}}" class="card text-dark bg-light mb-3">
+          <div class="card-header">Search</div>
+          <div class="card-body">
+            <h5 class="card-title">All Stories</h5>
+            <p class="card-text">Search the full-text of all stories done by NYT about Pakistan in 2018, find stories that contain interesting keywords.</p>
+          </div>
+        </a>
+
+
+    </div>
+</div>
+
 
 {% endblock %}
 

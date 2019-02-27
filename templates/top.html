@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block title %}Top Stories{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <a href="https://en.dailypakistan.com.pk/headline/only-one-indian-pilot-under-pakistan-armys-custody-dg-ispr/">
+            <img src="data:image/webp;base64,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" class="attachment-homepage-headline size-homepage-headline wp-post-image" alt="" data-pagespeed-url-hash="4276226781" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+        </a>
+    </div>
+    <div class="col-md-9">
+        <a href="https://en.dailypakistan.com.pk/headline/only-one-indian-pilot-under-pakistan-armys-custody-dg-ispr/">
+            <h2 class="entry-title">Only one Indian pilot under Pakistan Army’s custody: DG ISPR</h2>
+        </a>
+        <h5 class="dtstring"><span class="clock">🕜</span> 6:38 pm / 27 Feb 2019</h5>
+    </div>
+</div>
+{% endblock %}

@@ -189,6 +189,13 @@ def author(id):
 
     return render_template('author.html', author=author, stories=stories)
 
+
+@cache.cached(timeout=50)
+@app.route("/top-stories-embed/")
+def top_stories(id):
+
+    return render_template('author.html', author=author, stories=stories)
+
 # @app.route("/back")
 # def back():
 #     au = Story.query.all()

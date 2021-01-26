@@ -52,7 +52,7 @@ nltk==3.4
 numpy==1.16.0
 pandas==0.23.4
 parsel==1.5.1
-Pillow==5.4.1
+Pillow==7.1.0
 plac==0.9.6
 preshed==2.0.1
 pyasn1==0.4.5
